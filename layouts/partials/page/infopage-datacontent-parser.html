@@ -1,0 +1,54 @@
+{{- define "render-block" -}}
+  {{- $block := . -}}
+
+  {{- if eq $block.type "profile-picture" -}}
+    <img class="profile-picture rounded-circle d-block mx-auto mb-3" src="{{ $block.src }}" alt="profile picture" />
+
+  {{- else if eq $block.type "text" -}}
+    <p>{{ $block.content | markdownify }}</p>
+
+  {{- else if eq $block.type "link" -}}
+    <a class="btn btn-primary p-3 text-start display-flex container-fluid" href="{{$block.href}}">
+      <i class="{{ or $block.iconClass "bi bi-link-45deg" }}"></i>&nbsp;
+        <span>{{$block.name}}</span>
+    </a>
+  {{- else if eq $block.type "collapsible" -}}
+    {{- $id := printf "collapse-%d" (now.UnixNano) -}}
+    <div class="accordion mb-2" id="accordion-{{ $id }}">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading-{{ $id }}">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ $id }}" aria-expanded="false" aria-controls="collapse-{{ $id }}">
+            {{- if $block.iconClass}}<i class="{{$block.iconClass}}"></i>&nbsp;{{- end}}
+            {{ or $block.name "Toggle" }}
+          </button>
+        </h2>
+        <div id="collapse-{{ $id }}" class="accordion-collapse collapse" aria-labelledby="heading-{{ $id }}" data-bs-parent="#accordion-{{ $id }}">
+          <div class="accordion-body">
+            {{- range $block.content }}
+              {{ template "render-block" . }}
+            {{- end }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+  {{- else if eq $block.type "alert"}}
+    <div class="alert alert-{{ or $block.alertType "primary" }}" role="alert">
+     {{$block.content | markdownify}}
+    </div>
+  {{- else}}
+    <div class="alert alert-warning" role="alert">
+    Warning! Block type unsupported: <code>{{$block.type}}</code>
+    </div>
+  {{- end -}}
+
+{{- end -}}
+
+{{/* Entry point */}}
+{{- define "infopage-parser" -}}
+  {{- range . }}
+    {{ template "render-block" . }}
+  {{- end -}}
+{{- end -}}
+
+{{ template "infopage-parser" . }}
