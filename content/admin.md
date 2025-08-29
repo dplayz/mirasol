@@ -1,0 +1,4 @@
+---
+layout: adminpanel
+single: true
+---
