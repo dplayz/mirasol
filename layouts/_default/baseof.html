@@ -4,14 +4,16 @@
   {{ partial "head.html" . }}
 </head>
 <body>
-  <header>
+  {{- block "header" .}}
+  <header class="sticky-top" id="pageheader">
     {{ partial "header.html" . }}
   </header>
+  {{- end}}
   <main>
     {{ block "main" . }}{{ end }}
   </main>
-  <footer>
+  {{- block "footer" .}}
     {{ partial "footer.html" . }}
-  </footer>
+  {{- end}}
 </body>
 </html>
