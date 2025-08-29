@@ -3,6 +3,7 @@ body {
   font-family: sans-serif;
   line-height: 1.5;
   max-width: 1366px;
+  margin: 0 auto;
 }
 body main{
   margin:1rem;
