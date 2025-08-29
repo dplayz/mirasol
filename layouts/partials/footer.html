@@ -1,1 +1,57 @@
-<p>Copyright {{ now.Year }}. All rights reserved.</p>
+<footer class="nav d-flex container-fluid flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+    <section class="row container-fluid row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 mx-2 mx-md-3 justify-content-between">
+        <div class="col-sm-12 col-md-12 col-lg-3 mb-3">
+            <a href="/" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none" aria-label="Bootstrap">
+                <img src="/images/logo.png" width="50px">&nbsp;
+                <span>{{.Site.Title}}</span>
+            </a>
+            <p class="text-body-secondary">Site description is placed here</p>
+        </div>
+        <div class="col mb-3">
+            <h5>Section</h5>
+            <ul class="nav flex-column">
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
+            </ul>
+        </div>
+        <div class="col mb-3">
+            <h5>Section</h5>
+            <ul class="nav flex-column">
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
+            </ul>
+        </div>
+        <div class="col mb-3">
+            <h5>Section</h5>
+            <ul class="nav flex-column">
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
+            </ul>
+        </div>
+    </section>
+    <hr>
+    <section class="d-flex container-fluid flex-wrap justify-content-between align-items-center py-3 mt-4 border-top">
+      <div class="col-lg-8 col-12 d-flex align-items-center text-start order-2 order-lg-1">
+        <a href="/" class="mb-3 me-2 mb-lg-0 text-body-secondary text-decoration-none lh-1">
+          <img src="/images/logo.png" width="50px">
+        </a>
+        <span class="mb-3 mb-lg-0 text-body-secondary">© {{- now.Year }} {{.Site.Title}}.
+          <br>
+          All rights reserved
+        </span>
+      </div>
+      <ul class="nav col-lg-4 col-12 justify-content-center justify-content-lg-end list-unstyled p-2 p-lg-0 order-1 order-lg-2">
+        <li class="m-2 fs-2 text-body-tertiary"><i class="bi bi-facebook"></i></li>
+        <li class="m-2 fs-2 text-body-tertiary"><i class="bi bi-discord"></i></li>
+      </ul>
+    </section>
+</footer>
