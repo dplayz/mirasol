@@ -22,3 +22,9 @@ a {
   color: #00e;
   text-decoration: none;
 }
+
+.infopage{
+  max-width: 576px;
+  margin-left: auto;
+  margin-right: auto;
+}
