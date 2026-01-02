@@ -7,11 +7,22 @@
   {{- else if eq $block.type "text" -}}
     <p>{{ $block.content | markdownify }}</p>
 
-  {{- else if eq $block.type "link" -}}
-    <a class="btn btn-primary p-3 text-start display-flex container-fluid" href="{{$block.href}}">
+  {{- else if eq $block.type "link" -}} 
+    <a class="btn btn-primary p-3 text-start display-flex container-fluid mb-2" href="{{$block.href}}">
       <i class="{{ or $block.iconClass "bi bi-link-45deg" }}"></i>&nbsp;
         <span>{{$block.name}}</span>
     </a>
+  {{- else if eq $block.type "inline-icons" -}}
+    <div class="d-flex flex-row flex-wrap justify-content-center my-1">
+    {{- range $block.content }}
+      {{- $innerBlock := . -}}
+      {{- if eq $innerBlock.type "link" -}}
+        <a class="btn btn-sm fs-3" href="{{$innerBlock.href}}">
+          <i class="{{ or $innerBlock.iconClass "bi bi-link-45deg" }}"></i>
+        </a>
+      {{- end }}
+    {{- end }}
+    </div>
   {{- else if eq $block.type "collapsible" -}}
     {{- $id := printf "collapse-%d" (now.UnixNano) -}}
     <div class="accordion mb-2" id="accordion-{{ $id }}">
