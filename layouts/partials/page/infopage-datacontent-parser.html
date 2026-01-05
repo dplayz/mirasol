@@ -23,6 +23,14 @@
       {{- end }}
     {{- end }}
     </div>
+  {{- else if eq $block.type "iframe" -}}
+    <div class="container-fluid">
+      <iframe id="iframe" src="{{ $block.src }}" allowfullscreen width="100%"></iframe>
+    </div>
+  {{- if eq $block.autoresize true -}}
+    <script src="https://cdn.jsdelivr.net/npm/@iframe-resizer/parent@latest"></script>
+    <script> iframeResize({ license: 'GPLv3', log: 'collapsed'}) </script>
+  {{- end -}}
   {{- else if eq $block.type "collapsible" -}}
     {{- $id := printf "collapse-%d" (now.UnixNano) -}}
     <div class="accordion mb-2" id="accordion-{{ $id }}">
