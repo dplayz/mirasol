@@ -8,9 +8,20 @@
     <p>{{ $block.content | markdownify }}</p>
 
   {{- else if eq $block.type "link" -}} 
-    <a class="btn btn-primary p-3 text-start display-flex container-fluid mb-2" href="{{$block.href}}">
-      <i class="{{ or $block.iconClass "bi bi-link-45deg" }}"></i>&nbsp;
-        <span>{{$block.name}}</span>
+    <a role="button" class="btn btn-primary d-flex p-3 text-start container-fluid align-items-center" href="{{$block.href}}">
+      <span>
+        {{- if $block.iconClass}}
+          <i class="{{$block.iconClass}} fs-4"></i>
+        {{- else }}
+          <i class="bi bi-link-45deg fs-4"></i>
+        {{- end}}
+      </span>
+      <span class="d-block w-100 text-center">
+        {{ or $block.name "Link" }}
+      </span>
+      <span>
+        <i class="bi bi-box-arrow-up-right"></i>
+      </span>
     </a>
   {{- else if eq $block.type "inline-icons" -}}
     <div class="d-flex flex-row flex-wrap justify-content-center my-1">
@@ -37,8 +48,16 @@
       <div class="accordion-item">
         <h2 class="accordion-header" id="heading-{{ $id }}">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ $id }}" aria-expanded="false" aria-controls="collapse-{{ $id }}">
-            {{- if $block.iconClass}}<i class="{{$block.iconClass}}"></i>&nbsp;{{- end}}
-            {{ or $block.name "Toggle" }}
+            <span>
+              {{- if $block.iconClass}}
+                <i class="{{$block.iconClass}} fs-4"></i>
+              {{- else }}
+                <i class="bi bi-plus-square fs-4"></i>
+              {{- end}}
+            </span>
+            <span class="d-block w-100 text-center">
+              {{ or $block.name "Toggle" }}
+            </span>
           </button>
         </h2>
         <div id="collapse-{{ $id }}" class="accordion-collapse collapse" aria-labelledby="heading-{{ $id }}" data-bs-parent="#accordion-{{ $id }}">
