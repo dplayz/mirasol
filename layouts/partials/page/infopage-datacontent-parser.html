@@ -69,7 +69,12 @@
         </div>
       </div>
     </div>
-
+  {{- else if eq $block.type "conditional" -}}
+    <div class="conditional-block" data-condition="{{ $block.condition | jsonify }}" style="display: none;">
+      {{- range $block.content }}
+        {{ template "render-block" . }}
+      {{- end }}
+    </div>
   {{- else if eq $block.type "alert"}}
     <div class="alert alert-{{ or $block.alertType "primary" }}" role="alert">
      {{$block.content | markdownify}}
@@ -90,3 +95,13 @@
 {{- end -}}
 
 {{ template "infopage-parser" . }}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.conditional-block').forEach(function(div) {
+      const condition = JSON.parse(div.dataset.condition);
+      if (eval(condition)) {
+        div.style.display = '';
+      }
+    });
+  });
+</script>
