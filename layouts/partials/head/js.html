@@ -10,3 +10,13 @@
     {{- end }}
   {{- end }}
 {{- end }}
+
+
+<!-- Head Scripts URL Parameters Parser-->
+<script>
+    var urlParamValues = {};
+    const urlParams = new URLSearchParams(window.location.search);
+    for (const [key, value] of urlParams) {
+        urlParamValues[key] = value;
+    }
+</script>
