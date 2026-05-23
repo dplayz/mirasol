@@ -1,22 +1,65 @@
 {{ define "main" }}
-  <h1>{{ .Title }}</h1>
-  {{ .Content }}
+<a href="{{ .Site.BaseURL }}" class="btn btn-outline-primary text-start">
+    <i class="fa-solid fa-arrow-left"></i> Back to {{ .Site.Title }}
+</a>
+  <section class="post-list-content">
+    <h1>{{ .Title }}</h1>
+    {{ .Content }}
+  </section>
+  <section class="post-list-actions-top d-flex align-items-end">
+    <button class="btn btn-outline-secondary">
+      <i class="bi bi-list"></i>
+    </button>
+    <button class="btn btn-outline-secondary ms-3">
+      <i class="bi bi-grid"></i>
+    </button>
+  </section>
+  <section class="post-list m-2 row row-cols-2 gap-5 py-2">
   {{ range .Pages }}
-    <div class="container-fluid border rounded p-3 my-3">
-      <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
-      {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
-      {{ $dateHuman := .Date | time.Format ":date_long" }}
-      <span>
-        <i class="bi bi-clock"></i>
-        <time datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
-      </span>
-      <span>
-        <i class="bi bi-file-person"></i>
-        <span>{{.Site.Title}} Authors (WIP Field)</span>
-      </span>
-      <hr>
-      {{ .Summary }}
-    </div>
-
+    <article class="border rounded shadow-lg row p-2 py-4">
+        <section class="post-thumbnail">
+            {{ with .Params.thumbnail }}
+            <img src="{{ . }}" alt="{{ $.Title }}" class="img-fluid rounded my-3">
+            {{ end }}
+        </section>
+        <section>
+            <header class="post-header">
+                <div class="post-meta">
+                    <h2 class="post-title">
+                        <a>{{ .Title }}</a>
+                    </h2>
+                    <p>
+                        {{ with .Date }}
+                        <i class="bi bi-calendar"></i>
+                        <time datetime="{{ .Format "2006-01-02T15:04:05Z07:00" }}">{{ .Format "January 2, 2006" }}</time>
+                        {{ end }} 
+                        {{ with .Params.author }}
+                        |
+                        <span class="post-author">
+                            <i class="bi bi-person"></i>    
+                            {{ . }}
+                        </span>
+                        {{ end }}
+                </div>
+            </header>
+        </section>
+        <section class="post-content">
+            {{ .Summary }}
+        </section>
+        <section class="post-actions mt-3">
+            <a href="{{ .Permalink }}" class="btn btn-outline-primary">
+                Read More
+            </a>
+        </section>
+    </article>      
   {{ end }}
+  </section>
+  <section class="post-list-actions-bottom d-flex justify-content-center">
+      <button class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Prev
+      </button>
+      <button class="btn btn-outline-secondary ms-3">
+        <i class="bi bi-arrow-right"></i> Next
+      </button>
+  </section>
 {{ end }}
