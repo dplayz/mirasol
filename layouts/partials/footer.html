@@ -30,8 +30,15 @@
         </span>
       </div>
       <ul class="nav col-lg-4 col-12 justify-content-center justify-content-lg-end list-unstyled p-2 p-lg-0 order-1 order-lg-2">
-        <li class="m-2 fs-2 text-body-tertiary"><i class="bi bi-facebook"></i></li>
-        <li class="m-2 fs-2 text-body-tertiary"><i class="bi bi-discord"></i></li>
+        {{ with .Site.Menus.socials }}
+        {{ range . }}
+        <li class="ms-3">
+          <a class="text-body-secondary" href="{{ .URL }}" target="_blank" rel="noopener">
+            <i class='{{.Params.icon}} h3'></i>
+          </a>
+        </li>
+        {{ end }}
+        {{ end }}
       </ul>
     </section>
 </footer>
