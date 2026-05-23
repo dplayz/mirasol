@@ -1,29 +1,69 @@
 {{ define "main" }}
-
-<article class="post post-style-1">
-    <header class="post-header" style="background-image: url('{{ .Params.image }}');">
-        <a href="{{ .Site.BaseURL }}" class="btn btn-outline-primary text-start">
-            <i class="fa-solid fa-arrow-left"></i> Back to {{ .Site.Title }}
-        </a>
-        <div class="post-meta p-5">
-            <h1 class="post-title text-center">{{ .Title }}</h1>
-            <p class="text-center">
-                {{ with .Date }}
-                <i class="bi bi-calendar"></i>
-                <time datetime="{{ .Format "2006-01-02T15:04:05Z07:00" }}">{{ .Format "January 2, 2006" }}</time>
-                {{ end }} 
-                {{ with .Params.author }}
-                |
-                <span class="post-author">
-                    <i class="bi bi-person"></i>
-                    {{ . }}
-                </span>
+<a href="{{ .Site.BaseURL }}" class="btn btn-outline-primary text-start">
+    <i class="fa-solid fa-arrow-left"></i> Back to {{ .Site.Title }}
+</a>
+<article class="post-style-2 p-4 m-3 border rounded shadow-lg">
+    <section class="post-thumbnail">
+        {{ with .Params.thumbnail }}
+        <img src="{{ . }}" alt="{{ $.Title }}" class="img-fluid rounded my-3">
+        {{ end }}
+    </section>
+    <section>
+        <header class="post-header">
+            <div class="post-meta">
+                <h1 class="post-title">{{ .Title }}</h1>
+                <p>
+                    {{ with .Date }}
+                    <i class="bi bi-calendar"></i>
+                    <time datetime="{{ .Format "2006-01-02T15:04:05Z07:00" }}">{{ .Format "January 2, 2006" }}</time>
+                    {{ end }} 
+                    {{ with .Params.author }}
+                    |
+                    <span class="post-author">
+                        <i class="bi bi-person"></i>    
+                        {{ . }}
+                    </span>
+                    {{ end }}
+                </p>
+            </div>
+        </header>
+    <section class="post-content">
+        {{ .Content }}
+    </section>
+    <section>
+        {{ with .Params.tags }}
+        <div class="post-tags mt-4">
+            <h5>Tags:</h5>
+            <ul class="list-inline">
+                {{ range . }}
+                <li class="list-inline-item">
+                    <a href="{{ $.Site.BaseURL }}tags/{{ . | urlize }}" class="badge bg-secondary text-decoration-none">{{ . }}</a>
+                </li>
                 {{ end }}
-            </p>
+            </ul>
         </div>
-    </header>
-<div class="post-content p-3">
-    {{ .Content }}
-</div>
+        {{ end }}
+    </section>
+    </section class="post-actions">
+    <section class="d-flex justify-content-evenly">
+        <button class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Prev
+        </button>
+        <button class="btn btn-outline-secondary">
+            <i class="bi bi-hand-thumbs-up"></i> Reactions
+        </button>
+        <button class="btn btn-outline-secondary ms-3">
+            <i class="bi bi-chat"></i> Comments
+        </button>
+        <button class="btn btn-outline-secondary ms-3">
+            <i class="bi bi-share"></i> Share
+        </button>
+        <button class="btn btn-outline-secondary ms-3">
+            <i class="bi bi-arrow-right"></i> Next
+        </button>
+    </section>
+    <section class="post-actions-modals">
+    </section>
 </article>
+
 {{ end }}
