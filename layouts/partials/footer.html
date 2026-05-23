@@ -5,38 +5,18 @@
                 <img src="/images/logo.png" width="50px">&nbsp;
                 <span>{{.Site.Title}}</span>
             </a>
-            <p class="text-body-secondary">Site description is placed here</p>
+            <p class="text-body-secondary">{{.Site.Params.Description}}</p>
         </div>
+        {{ range .Site.Menus.footer}}
         <div class="col mb-3">
-            <h5>Section</h5>
+            <h5>{{ .Name }}</h5>
             <ul class="nav flex-column">
-                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
-                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li>
-                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li>
-                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
-                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
+            {{ range .Params.items }}
+                <li class="nav-item mb-2"><a href="{{ .url }}" class="nav-link p-0 text-body-secondary">{{ .name }}</a></li>
+            {{ end }}
             </ul>
         </div>
-        <div class="col mb-3">
-            <h5>Section</h5>
-            <ul class="nav flex-column">
-                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
-                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li>
-                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li>
-                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
-                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
-            </ul>
-        </div>
-        <div class="col mb-3">
-            <h5>Section</h5>
-            <ul class="nav flex-column">
-                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
-                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li>
-                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li>
-                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
-                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
-            </ul>
-        </div>
+        {{ end }}
     </section>
     <hr>
     <section class="d-flex container-fluid flex-wrap justify-content-between align-items-center py-3 mt-4 border-top">
