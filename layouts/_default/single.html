@@ -1,10 +1,29 @@
 {{ define "main" }}
-  <h1>{{ .Title }}</h1>
 
-  {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
-  {{ $dateHuman := .Date | time.Format ":date_long" }}
-  <time datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
-
-  {{ .Content }}
-  {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
+<article class="post post-style-1">
+    <header class="post-header" style="background-image: url('{{ .Params.image }}');">
+        <a href="{{ .Site.BaseURL }}" class="btn btn-outline-primary text-start">
+            <i class="fa-solid fa-arrow-left"></i> Back to {{ .Site.Title }}
+        </a>
+        <div class="post-meta p-5">
+            <h1 class="post-title text-center">{{ .Title }}</h1>
+            <p class="text-center">
+                {{ with .Date }}
+                <i class="bi bi-calendar"></i>
+                <time datetime="{{ .Format "2006-01-02T15:04:05Z07:00" }}">{{ .Format "January 2, 2006" }}</time>
+                {{ end }} 
+                {{ with .Params.author }}
+                |
+                <span class="post-author">
+                    <i class="bi bi-person"></i>
+                    {{ . }}
+                </span>
+                {{ end }}
+            </p>
+        </div>
+    </header>
+<div class="post-content p-3">
+    {{ .Content }}
+</div>
+</article>
 {{ end }}
