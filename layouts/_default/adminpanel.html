@@ -1,14 +1,85 @@
 {{- define "head-additions"}}
     <meta name="turbo-visit-control" content="reload">
-    <style>main{display: none;}</style>
+    <style>body main{margin: 0;}</style>
 {{- end}}
 {{- define "header"}}<!-- Header omitted --> {{end}}
 {{ define "main" }}
-    <link rel="stylesheet" href="https://unpkg.com/@staticcms/app@^4.0.0/dist/main.css" />
-    <!-- Include the script that builds the page and powers Static CMS -->
-    <script src="https://unpkg.com/@staticcms/app@^4.0.0/dist/static-cms-app.js"></script>
-    <script>
-      window.CMS.init();
-    </script>
+<div id="nc-root" style="margin: 0"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/@staticcms/app@4.3.0/dist/main.css" />
+
+<script src="https://unpkg.com/@staticcms/app@4.3.0/dist/static-cms-app.js"></script>
+<script>
+  window.addEventListener("load", function () {
+    // Important: override auto-config lookup
+    window.CMS.init({
+      config: {
+        local_backend: true,
+        backend: { name: "git-gateway", branch: "main" },
+        media_folder: "static/uploads",
+        public_folder: "/uploads",
+        collections: [
+          {
+            name: "blog",
+            label: "Blog",
+            folder: "content/posts",
+            create: true,
+            fields: [
+              { name: "title", label: "Title", widget: "string" },
+              { name: "date", label: "Date", widget: "datetime", picker_utc: true },
+              { name: "description", label: "Description", widget: "text" },
+              { name: "body", label: "Body", widget: "markdown" },
+              { name: "tags", label: "Tags", widget: "list" }
+            ]
+          },
+          {
+            name: "pages",
+            label: "Pages",
+            files: [
+              {
+                file: "content/_index.md",
+                label: "Homepage",
+                name: "home",
+                fields: [
+                  { name: "title", label: "Title", widget: "string" },
+                  { name: "body", label: "Body", widget: "markdown" }
+                ]
+              }
+            ]
+          },
+          {
+            name: "settings",
+            label: "Site Settings",
+            files: [
+              {
+                file: "config/cmsconfig.yml", label: "CMS Configuration", name: "CMS",
+        
+                fields: [
+                    {
+                      name: 'params', label: 'Site Settings', widget: 'object', collapsed: false,
+                      fields: [
+                        {
+                          name: 'cms',
+                          label: 'CMS Configuration',
+                          widget: 'object',
+                          collapsed: false,
+                      fields: [
+                        { name: "siteTitle", label: "Site Title", widget: "string" },
+                        { name: "siteDescription", label: "Description", widget: "text" },
+                        { name: "author", label: "Author", widget: "string" }
+                      ],
+                        },
+                      ],
+                    },
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    });
+  });
+</script>
+
 {{ end }}
 {{- define "footer"}}<!-- Footer omitted --> {{end}}
