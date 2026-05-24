@@ -1,6 +1,6 @@
 {{ define "main" }}
-<a href="{{ .Site.BaseURL }}" class="btn btn-outline-primary text-start">
-    <i class="fa-solid fa-arrow-left"></i> Back to {{ .Site.Title }}
+<a href="{{ .Parent.Permalink }}" class="text-start">
+    <i class="fa-solid fa-arrow-left"></i>&lt; Back to {{ .Parent.Title }}
 </a>
 <article class="post-style-2 p-4 m-3 border rounded shadow-lg">
     <section class="post-thumbnail">

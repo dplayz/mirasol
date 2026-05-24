@@ -1,12 +1,12 @@
 {{ define "main" }}
-<a href="{{ .Site.BaseURL }}" class="btn btn-outline-primary text-start">
-    <i class="fa-solid fa-arrow-left"></i> Back to {{ .Site.Title }}
+<a href="{{ .Parent.Permalink }}" class="text-start">
+    <i class="fa-solid fa-arrow-left"></i>&lt; Back to {{ .Parent.Title }}
 </a>
   <section class="post-list-content">
     <h1>{{ .Title }}</h1>
     {{ .Content }}
   </section>
-  <section class="post-list-actions-top d-flex align-items-end">
+  <section class="post-list-actions-top d-md-block d-flex align-items-end">
     <button class="btn btn-outline-secondary">
       <i class="bi bi-list"></i>
     </button>
@@ -16,6 +16,7 @@
   </section>
   <section class="post-list m-2 row row-cols-2 gap-5 py-2">
   {{ range .Pages }}
+  <div class="row">
     <article class="border rounded shadow-lg row p-2 py-4">
         <section class="post-thumbnail">
             {{ with .Params.thumbnail }}
@@ -51,7 +52,8 @@
                 Read More
             </a>
         </section>
-    </article>      
+    </article> 
+  </div>     
   {{ end }}
   </section>
   <section class="post-list-actions-bottom d-flex justify-content-center">
