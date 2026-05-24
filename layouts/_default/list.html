@@ -15,8 +15,10 @@
       <i class="bi bi-grid"></i>
     </button>
   </section>
+  {{ $pages := where .Site.RegularPages "Type" "posts" }}
+  {{ $paginator := .Paginate ( $pages.ByDate ) 6 }}
   <section class="post-list m-2 row row-cols-2 gap-5 py-2 align-items-start">
-    {{ range .Pages }}
+    {{ range $paginator.Pages }}
     <article class="border rounded shadow-lg row p-2 py-4 h-auto align-self-start">
         <section class="post-thumbnail">
             {{ with .Params.thumbnail }}
@@ -56,12 +58,7 @@
     {{ end }}
   </section>
   <section class="post-list-actions-bottom d-flex justify-content-center">
-      <button class="btn btn-outline-secondary">
-        <i class="bi bi-arrow-left"></i> Prev
-      </button>
-      <button class="btn btn-outline-secondary ms-3">
-        <i class="bi bi-arrow-right"></i> Next
-      </button>
+    {{ partial "pagination.html" . }}
   </section>
 </section>
 {{ end }}

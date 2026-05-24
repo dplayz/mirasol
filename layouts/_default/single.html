@@ -46,9 +46,13 @@
     </section>
     </section class="post-actions">
     <section class="d-flex justify-content-evenly">
-        <button class="btn btn-outline-secondary">
+
+        {{ with .PrevInSection }}
+        <a class="btn btn-outline-secondary" href="{{ .Permalink }}">
             <i class="bi bi-arrow-left"></i> Prev
-        </button>
+        </a>
+        {{ end }}
+
         <button class="btn btn-outline-secondary">
             <i class="bi bi-hand-thumbs-up"></i> Reactions
         </button>
