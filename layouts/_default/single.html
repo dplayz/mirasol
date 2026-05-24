@@ -62,9 +62,11 @@
         <button class="btn btn-outline-secondary ms-3">
             <i class="bi bi-share"></i> Share
         </button>
-        <button class="btn btn-outline-secondary ms-3">
+        {{ with .NextInSection }}
+        <a class="btn btn-outline-secondary" href="{{ .Permalink }}">
             <i class="bi bi-arrow-right"></i> Next
-        </button>
+        </a>
+        {{ end }}
     </section>
     <section class="post-actions-modals">
     </section>
