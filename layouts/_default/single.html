@@ -59,7 +59,7 @@
         <button class="btn btn-outline-secondary ms-3">
             <i class="bi bi-chat"></i> Comments
         </button>
-        <button class="btn btn-outline-secondary ms-3">
+        <button class="btn btn-outline-secondary ms-3" data-bs-toggle="modal" data-bs-target="#postShareModal">
             <i class="bi bi-share"></i> Share
         </button>
         {{ with .NextInSection }}
@@ -69,6 +69,50 @@
         {{ end }}
     </section>
     <section class="post-actions-modals">
+    <!-- Share Modal-->
+    <div class="modal fade " id="postShareModal" tabindex="-1" aria-labelledby="postShareModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="postShareModalLabel">Share Post</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {{ $shareURL := .Permalink }}
+                {{ $shareTitle := .Title }}
+                <div class="d-grid gap-2">
+                    <a class="btn btn-outline-primary" target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/sharer/sharer.php?u={{ $shareURL | urlquery }}">
+                        <i class="bi bi-facebook"></i> Facebook
+                    </a>
+                    <a class="btn btn-outline-info" target="_blank" rel="noopener noreferrer" href="https://twitter.com/intent/tweet?url={{ $shareURL | urlquery }}&text={{ $shareTitle | urlquery }}">
+                        <i class="bi bi-twitter-x"></i> X
+                    </a>
+                    <a class="btn btn-outline-primary" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url={{ $shareURL | urlquery }}">
+                        <i class="bi bi-linkedin"></i> LinkedIn
+                    </a>
+                    <a class="btn btn-outline-danger" target="_blank" rel="noopener noreferrer" href="https://www.reddit.com/submit?url={{ $shareURL | urlquery }}&title={{ $shareTitle | urlquery }}">
+                        <i class="bi bi-reddit"></i> Reddit
+                    </a>
+                    <a class="btn btn-outline-info" target="_blank" rel="noopener noreferrer" href="https://t.me/share/url?url={{ $shareURL | urlquery }}&text={{ $shareTitle | urlquery }}">
+                        <i class="bi bi-telegram"></i> Telegram
+                    </a>
+                    <a class="btn btn-outline-success" target="_blank" rel="noopener noreferrer" href="https://wa.me/?text={{ printf "%s %s" $shareTitle $shareURL | urlquery }}">
+                        <i class="bi bi-whatsapp"></i> WhatsApp
+                    </a>
+                    <a class="btn btn-outline-secondary" target="_blank" rel="noopener noreferrer" href="mailto:?subject={{ $shareTitle | urlquery }}&body={{ $shareURL | urlquery }}">
+                        <i class="bi bi-envelope"></i> Email
+                    </a>
+                    <button class="btn btn-outline-dark" type="button" onclick="navigator.clipboard.writeText('{{ $shareURL }}')">
+                        <i class="bi bi-link-45deg"></i> Copy link
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+    </div>
     </section>
 </article>
 
