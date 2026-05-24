@@ -1,7 +1,8 @@
 {{ define "main" }}
-<a href="{{ .Parent.Permalink }}" class="text-start">
-    <i class="fa-solid fa-arrow-left"></i>&lt; Back to {{ .Parent.Title }}
-</a>
+<section class="post-list-main">
+  <a href="{{ .Parent.Permalink }}" class="text-start">
+      <i class="fa-solid fa-arrow-left"></i>&lt; Back to {{ .Parent.Title }}
+  </a>
   <section class="post-list-content">
     <h1>{{ .Title }}</h1>
     {{ .Content }}
@@ -64,4 +65,5 @@
         <i class="bi bi-arrow-right"></i> Next
       </button>
   </section>
+</section>
 {{ end }}
