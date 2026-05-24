@@ -53,11 +53,8 @@
         </a>
         {{ end }}
 
-        <button class="btn btn-outline-secondary">
-            <i class="bi bi-hand-thumbs-up"></i> Reactions
-        </button>
-        <button class="btn btn-outline-secondary ms-3">
-            <i class="bi bi-chat"></i> Comments
+        <button class="btn btn-outline-secondary ms-3" data-bs-toggle="modal" data-bs-target="#postCommentsModal">
+            <i class="bi bi-chat"></i> Discuss
         </button>
         <button class="btn btn-outline-secondary ms-3" data-bs-toggle="modal" data-bs-target="#postShareModal">
             <i class="bi bi-share"></i> Share
@@ -69,6 +66,31 @@
         {{ end }}
     </section>
     <section class="post-actions-modals">
+    <!-- Share Modal-->
+    <div class="modal fade" id="postCommentsModal" tabindex="-1" aria-labelledby="postCommentsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="postCommentsModalLabel">Comments</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+                {{ if eq .Params.comments true }}
+                {{ partial "disqus.html" . }}
+                {{ else}}
+                <p class="alert-danger">Comments disabled</p>
+                {{ end }}
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+    </div>
+    </section>
     <!-- Share Modal-->
     <div class="modal fade " id="postShareModal" tabindex="-1" aria-labelledby="postShareModalLabel" aria-hidden="true">
         <div class="modal-dialog">
