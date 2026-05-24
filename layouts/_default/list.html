@@ -8,16 +8,16 @@
     {{ .Content }}
   </section>
   <section class="post-list-actions-top d-md-block d-flex align-items-end">
-    <button class="btn btn-outline-secondary">
+    <button id="view-list" class="btn btn-outline-secondary" aria-pressed="false" title="List view">
       <i class="bi bi-list"></i>
     </button>
-    <button class="btn btn-outline-secondary ms-3">
+    <button id="view-grid" class="btn btn-outline-secondary ms-3" aria-pressed="false" title="Grid view">
       <i class="bi bi-grid"></i>
     </button>
   </section>
   {{ $pages := where .Site.RegularPages "Type" "posts" }}
   {{ $paginator := .Paginate ( $pages.ByDate ) 6 }}
-  <section class="post-list m-2 row row-cols-2 gap-5 py-2 align-items-start">
+  <section id="post-list" class="post-list m-2 row row-cols-2 gap-5 py-2 align-items-start">
     {{ range $paginator.Pages }}
     <article class="border rounded shadow-lg row p-2 py-4 h-auto align-self-start">
         <section class="post-thumbnail">
