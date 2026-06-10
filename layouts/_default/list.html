@@ -15,8 +15,8 @@
       <i class="bi bi-grid"></i>
     </button>
   </section>
-  {{ $pages := where .Site.RegularPages "Type" "posts" }}
-  {{ $paginator := .Paginate ( $pages.ByDate ) 6 }}
+  {{ $pages := .RegularPages }}
+  {{ $paginator := .Paginate ( $pages ) 6 }}
   <section id="post-list" class="post-list m-2 row row-cols-2 gap-5 py-2 align-items-start">
     {{ range $paginator.Pages }}
     <article class="border rounded shadow-lg row p-2 py-4 h-auto align-self-start">
