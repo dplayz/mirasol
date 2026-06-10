@@ -28,3 +28,81 @@ a {
   margin-left: auto;
   margin-right: auto;
 }
+
+/* Stack Navigation Screens */
+.screens-container {
+  position: relative;
+  width: 100%;
+}
+
+.screen {
+  width: 100%;
+  padding: 0;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0;
+  transform: translateX(100px);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.screen.active {
+  display: flex;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.infopage-screens-header {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr 2.5rem;
+  align-items: center;
+  padding: 0.2rem 0 1rem 0;
+  margin-top: -20px;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid #e0e0e0;
+  min-height: 40px;
+}
+
+.infopage-screens-back-btn {
+  grid-column: 1;
+  justify-self: start;
+  color: #007aff;
+  padding: 0.25rem 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.infopage-screens-back-btn:hover {
+  opacity: 0.7;
+}
+
+.infopage-screens-title {
+  grid-column: 2;
+  width: auto;
+  align-self: center;
+  text-align: center;
+  font-weight: bold;
+  margin-top: 1.5pt;
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+.infopage-screens-content {
+  flex: 1;
+}
+
+.screen button {
+  margin-top: 12px;
+}
+
+.screen .d-flex {
+  align-items: center;
+  gap: 8px;
+}
+
+.screen .d-flex button {
+  margin: 0;
+}

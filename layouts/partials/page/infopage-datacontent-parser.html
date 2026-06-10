@@ -8,7 +8,7 @@
     <p>{{ $block.content | markdownify }}</p>
 
   {{- else if eq $block.type "link" -}} 
-    <a role="button" class="btn btn-primary d-flex p-3 text-start container-fluid align-items-center" href="{{$block.href}}">
+    <a role="button" class="btn btn-primary d-flex p-3 my-2 text-start container-fluid align-items-center" href="{{$block.href}}">
       <span>
         {{- if $block.iconClass}}
           <i class="{{$block.iconClass}} fs-4"></i>
@@ -23,6 +23,33 @@
         <i class="bi bi-box-arrow-up-right"></i>
       </span>
     </a>
+
+  {{- else if eq $block.type "screen-link" -}}
+    <button class="btn btn-primary d-flex p-3 text-start container-fluid align-items-center" onclick="router.push('{{ $block.screenId }}')">
+      <span>
+        {{- if $block.iconClass}}
+          <i class="{{$block.iconClass}} fs-4"></i>
+        {{- else }}
+          <i class="bi bi-link-45deg fs-4"></i>
+        {{- end}}
+      </span>
+      <span class="d-block w-100 text-center">
+        {{ or $block.name "Next" }}
+      </span>
+      <span>
+        <i class="bi bi-chevron-right"></i>
+      </span>
+    </button>
+
+  {{- else if eq $block.type "back-button" -}}
+    <button class="btn btn-secondary d-flex p-3 text-start container-fluid align-items-center" onclick="router.pop()">
+      <span>
+        <i class="bi bi-chevron-left fs-4"></i>
+      </span>
+      <span class="d-block w-100 text-center">
+        {{ or $block.name "Back" }}
+      </span>
+    </button>
   {{- else if eq $block.type "inline-icons" -}}
     <div class="d-flex flex-row flex-wrap justify-content-center my-1">
     {{- range $block.content }}
@@ -31,6 +58,10 @@
         <a class="btn btn-sm fs-3" href="{{$innerBlock.href}}">
           <i class="{{ or $innerBlock.iconClass "bi bi-link-45deg" }}"></i>
         </a>
+      {{- else if eq $innerBlock.type "screen-link" -}}
+        <button class="btn btn-sm fs-3" onclick="router.push('{{ $innerBlock.screenId }}')">
+          <i class="{{ or $innerBlock.iconClass "bi bi-link-45deg" }}"></i>
+        </button>
       {{- end }}
     {{- end }}
     </div>
@@ -78,6 +109,26 @@
   {{- else if eq $block.type "alert"}}
     <div class="alert alert-{{ or $block.alertType "primary" }}" role="alert">
      {{$block.content | markdownify}}
+    </div>
+  {{- else if eq $block.type "screens" -}}
+    <div class="screens-container">
+      {{- range $index, $screen := $block.screens }}
+        <div id="{{ $screen.id }}" class="screen{{if eq $index (or $block.initialScreen 0) }} active{{end}}">
+          {{- if ne $index (or $block.initialScreen 0) }}
+          <div class="infopage-screens-header">
+            <button class="btn btn-sm screen-back-btn" onclick="router.pop()" style="display: none;">
+              <i class="bi bi-chevron-left"></i>
+            </button>
+            <span class="infopage-screens-title">{{ $screen.title }}</span>
+          </div>
+          {{- end }}
+          <div class="infopage-screens-content">
+            {{- range $screen.content }}
+              {{ template "render-block" . }}
+            {{- end }}
+          </div>
+        </div>
+      {{- end }}
     </div>
   {{- else}}
     <div class="alert alert-warning" role="alert">
