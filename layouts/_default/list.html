@@ -7,58 +7,269 @@
     <h1>{{ .Title }}</h1>
     {{ .Content }}
   </section>
-  <section class="post-list-actions-top d-md-block d-flex align-items-end">
-    <button id="view-list" class="btn btn-outline-secondary" aria-pressed="false" title="List view">
-      <i class="bi bi-list"></i>
-    </button>
-    <button id="view-grid" class="btn btn-outline-secondary ms-3" aria-pressed="false" title="Grid view">
-      <i class="bi bi-grid"></i>
-    </button>
-  </section>
-  {{ $pages := .RegularPages }}
-  {{ $paginator := .Paginate ( $pages ) 6 }}
-  <section id="post-list" class="post-list m-2 row row-cols-2 gap-5 py-2 align-items-start">
-    {{ range $paginator.Pages }}
-    <article class="border rounded shadow-lg row p-2 py-4 h-auto align-self-start">
-        <section class="post-thumbnail">
-            {{ with .Params.thumbnail }}
-            <img src="{{ . }}" alt="{{ $.Title }}" class="img-fluid rounded my-3">
-            {{ end }}
-        </section>
-        <section>
-            <header class="post-header">
-                <div class="post-meta">
-                    <h2 class="post-title">
-                        <a>{{ .Title }}</a>
-                    </h2>
-                    <p>
-                        {{ with .Date }}
-                        <i class="bi bi-calendar"></i>
-                        <time datetime="{{ .Format "2006-01-02T15:04:05Z07:00" }}">{{ .Format "January 2, 2006" }}</time>
-                        {{ end }} 
-                        {{ with .Params.author }}
-                        |
-                        <span class="post-author">
-                            <i class="bi bi-person"></i>    
-                            {{ . }}
-                        </span>
-                        {{ end }}
-                </div>
-            </header>
-        </section>
-        <section class="post-content">
-            {{ .Summary }}
-        </section>
-        <section class="post-actions mt-3">
-            <a href="{{ .Permalink }}" class="btn btn-outline-primary">
-                Read More
-            </a>
-        </section>
-    </article>     
+  {{ $filterCategories := slice }}
+  {{ $filterTags := slice }}
+  {{ range .RegularPages }}
+    {{ with .Params.categories }}
+      {{ if reflect.IsSlice . }}
+        {{ range . }}
+          {{ $category := lower . }}
+          {{ if not (in $filterCategories $category) }}
+            {{ $filterCategories = $filterCategories | append $category }}
+          {{ end }}
+        {{ end }}
+      {{ else }}
+        {{ $category := lower . }}
+        {{ if not (in $filterCategories $category) }}
+          {{ $filterCategories = $filterCategories | append $category }}
+        {{ end }}
+      {{ end }}
     {{ end }}
+
+    {{ with .Params.tags }}
+      {{ if reflect.IsSlice . }}
+        {{ range . }}
+          {{ $tag := lower . }}
+          {{ if not (in $filterTags $tag) }}
+            {{ $filterTags = $filterTags | append $tag }}
+          {{ end }}
+        {{ end }}
+      {{ else }}
+        {{ $tag := lower . }}
+        {{ if not (in $filterTags $tag) }}
+          {{ $filterTags = $filterTags | append $tag }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+  <section class="post-list-actions-top mt-4 d-block align-items-end">
+    <div class="d-flex flex-wrap gap-2 px-2">
+      <div class="input-group">
+        <span class="input-group-text" id="search-addon">
+          <i class="bi bi-search"></i>
+        </span>
+        <input id="post-list-searchbar" class="fuzzy-search form-control flex-grow-1" placeholder="Search" />
+      </div>
+      <button id="view-list" class="btn btn-outline-secondary" aria-pressed="false" title="List view">
+        <i class="bi bi-list"></i>
+      </button>
+      <button id="view-grid" class="btn btn-outline-secondary" aria-pressed="false" title="Grid view">
+        <i class="bi bi-grid"></i>
+      </button>
+      <div class="dropdown">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="categoryDropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+          Categories
+        </button>
+        <ul class="dropdown-menu p-3" aria-labelledby="categoryDropdown" style="min-width: 200px;">
+          {{ range $filterCategories }}
+            {{ $categoryId := printf "cat-%s" (replaceRE "[^a-z0-9]+" "-" .) }}
+            <li>
+              <div class="form-check">
+                <input class="form-check-input filter-category" type="checkbox" value="{{ . }}" id="{{ $categoryId }}">
+                <label class="form-check-label w-100" for="{{ $categoryId }}">{{ . | replaceRE "-" " " | title }}</label>
+              </div>
+            </li>
+          {{ end }}
+        </ul>
+      </div>
+
+      <div class="dropdown">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="tagDropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+          Tags
+        </button>
+        <ul class="dropdown-menu p-3" aria-labelledby="tagDropdown" style="min-width: 200px;">
+          {{ range $filterTags }}
+            {{ $tagId := printf "tag-%s" (replaceRE "[^a-z0-9]+" "-" .) }}
+            <li>
+              <div class="form-check">
+                <input class="form-check-input filter-tag" type="checkbox" value="{{ . }}" id="{{ $tagId }}">
+                <label class="form-check-label w-100" for="{{ $tagId }}">{{ . | replaceRE "-" " " | title }}</label>
+              </div>
+            </li>
+          {{ end }}
+        </ul>
+      </div>
+
+      <button class="sort btn btn-outline-secondary text-nowrap" data-sort="post-title">
+        Sort by Title
+      </button>
+      <button class="sort btn btn-outline-secondary text-nowrap" data-sort="post-date">
+        Sort by Date
+      </button>
+    </div>
   </section>
-  <section class="post-list-actions-bottom d-flex justify-content-center">
-    {{ partial "pagination.html" . }}
+  <section id="hugo-blog-list" class="post-list-items d-block justify-content-center">
+    <div id="post-list" class="row g-2 py-2 m-2 list align-items-start">
+      {{ range .RegularPages }}
+        
+        {{ $categories := slice }}
+        {{ if isset .Params "categories" }}
+          {{ if reflect.IsSlice .Params.categories }}
+            {{ range .Params.categories }}
+              {{ $categories = $categories | append (lower .) }}
+            {{ end }}
+          {{ else }}
+            {{ $categories = $categories | append (.Params.categories | lower) }}
+          {{ end }}
+        {{ end }}
+
+        {{ $tags := slice }}
+        {{ if isset .Params "tags" }}
+          {{ if reflect.IsSlice .Params.tags }}
+            {{ range .Params.tags }}
+              {{ $tags = $tags | append (lower .) }}
+            {{ end }}
+          {{ else }}
+            {{ $tags = $tags | append (.Params.tags | lower) }}
+          {{ end }}
+        {{ end }}
+
+        <div class="col item">
+          <article class="card h-100 category tag" 
+                  data-category="{{ delimit $categories "," }}" 
+                  data-tag="{{ delimit $tags "," }}">
+            
+
+            {{- with .Params.date }}
+              <small class="text-muted d-none mb-2">{{ time.Format "2006-01-02" . }}</small>
+            {{- end }}
+
+            <img src='{{ .Params.thumbnail | default (.Parent.Params.thumbnail | default "https://placehold.co/480x240?text=Blog Thumbnail")}}' class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title post-title">{{ .Title }}</h5>
+              {{- with .Params.date }}
+                <small class="text-muted d-block mb-2">{{ time.Format "Jan 2, 2006" . }}</small>
+              {{- end }}
+              <p class="card-text post-text">{{ default .Params.description (.Content | truncate 100) }}</p>
+              <section class="mb-2">
+                {{ range $categories }}
+                  <span class="badge bg-primary"><i class="bi bi-folder2-open "></i>&nbsp; {{ . }}</span>
+                {{ end }}
+                {{ range $tags }}
+                  <span class="badge bg-secondary"><i class="bi bi-tag"></i>&nbsp; {{ . }}</span>
+                {{ end }}
+              </section>
+              <a href="{{ .Permalink }}" class="btn btn-primary">Read more</a>
+            </div>
+          </article>
+        </div>     
+      {{ end }}
+    </div>
+    <div>
+      <ul class="pagination d-flex justify-content-center"></ul>
+    </div>
   </section>
+
+<script>
+  document.addEventListener("turbo:load", function() {
+    var itemsExist = document.querySelectorAll('#hugo-blog-list .item').length > 0;
+
+    if (itemsExist) {
+      var listBtn = document.getElementById('view-list');
+      var gridBtn = document.getElementById('view-grid');
+      var postList = document.getElementById('post-list');
+      var searchInput = document.getElementById('post-list-searchbar');
+      var POST_LIST_TOGGLE_KEY = 'mirasol_posts_view';
+      var currentSearchQuery = '';
+
+      function setView(view) {
+        if (view === 'list') {
+          postList.classList.remove('row-cols-2');
+          postList.classList.add('row-cols-1');
+          postList.classList.add('list-view');
+          postList.classList.remove('grid-view');
+          if (listBtn) listBtn.classList.add('active');
+          if (gridBtn) gridBtn.classList.remove('active');
+          if (listBtn) listBtn.setAttribute('aria-pressed', 'true');
+          if (gridBtn) gridBtn.setAttribute('aria-pressed', 'false');
+        } else {
+          postList.classList.remove('row-cols-1');
+          postList.classList.add('row-cols-2');
+          postList.classList.add('grid-view');
+          postList.classList.remove('list-view');
+          if (gridBtn) gridBtn.classList.add('active');
+          if (listBtn) listBtn.classList.remove('active');
+          if (gridBtn) gridBtn.setAttribute('aria-pressed', 'true');
+          if (listBtn) listBtn.setAttribute('aria-pressed', 'false');
+        }
+        try { localStorage.setItem(POST_LIST_TOGGLE_KEY, view); } catch (e) {}
+      }
+
+      var options = {
+        valueNames: [
+          'post-title', 
+          'post-text',
+          'post-date',
+          { name: 'category', attr: 'data-category' },
+          { name: 'tag', attr: 'data-tag' }
+        ],
+        page: 6,
+        pagination: {
+          item: '<li class="page-item"><a class="page page-link" data-turbo="false" href="#"></a></li>'
+        }
+      };
+
+      var blogList = new List('hugo-blog-list', options);
+
+      function applyFilters() {
+        var activeCategories = Array.from(document.querySelectorAll('.filter-category:checked')).map(function (checkbox) { return checkbox.value; });
+        var activeTags = Array.from(document.querySelectorAll('.filter-tag:checked')).map(function (checkbox) { return checkbox.value; });
+
+        document.getElementById('categoryDropdown').innerText = activeCategories.length ? 'Categories (' + activeCategories.length + ')' : 'Categories';
+        document.getElementById('tagDropdown').innerText = activeTags.length ? 'Tags (' + activeTags.length + ')' : 'Tags';
+
+        blogList.search(currentSearchQuery);
+
+        blogList.filter(function(item) {
+          var itemCategories = (item.values().category || '').split(',').map(function(value) {
+            return value.trim();
+          }).filter(Boolean);
+          var itemTags = (item.values().tag || '').split(',').map(function(value) {
+            return value.trim();
+          }).filter(Boolean);
+          var itemValues = item.values();
+          var searchableText = [
+            itemValues['post-title'],
+            itemValues['post-text'],
+            itemValues['post-date'],
+            itemValues.category,
+            itemValues.tag
+          ].filter(Boolean).join(' ').toLowerCase();
+
+          var matchCategory = activeCategories.length === 0 || itemCategories.some(function(category) {
+            return activeCategories.includes(category);
+          });
+          var matchTag = activeTags.length === 0 || itemTags.some(function(tag) {
+            return activeTags.includes(tag);
+          });
+          var matchSearch = !currentSearchQuery || searchableText.indexOf(currentSearchQuery) !== -1;
+
+          return matchCategory && matchTag && matchSearch;
+        });
+      }
+
+      if (listBtn) listBtn.addEventListener('click', function () { setView('list'); });
+      if (gridBtn) gridBtn.addEventListener('click', function () { setView('grid'); });
+
+      document.querySelectorAll('.filter-category, .filter-tag').forEach(function(checkbox) {
+        checkbox.addEventListener('change', applyFilters);
+      });
+
+      if (searchInput) {
+        currentSearchQuery = searchInput.value.trim().toLowerCase();
+        searchInput.addEventListener('input', function () {
+          currentSearchQuery = this.value.trim().toLowerCase();
+          applyFilters();
+        });
+      }
+
+      var saved = null;
+      try { saved = localStorage.getItem(POST_LIST_TOGGLE_KEY); } catch (e) {}
+      if (saved === 'list' || saved === 'grid') setView(saved); else setView('grid');
+      applyFilters();
+    }
+  });
+</script>
+
 </section>
 {{ end }}

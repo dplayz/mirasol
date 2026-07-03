@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			if (listBtn) listBtn.classList.remove('active');
 			if (gridBtn) gridBtn.setAttribute('aria-pressed', 'true');
 			if (listBtn) listBtn.setAttribute('aria-pressed', 'false');
-		}
+			}
 		try { localStorage.setItem(POST_LIST_TOGGLE_KEY, view); } catch (e) {}
 	}
 
