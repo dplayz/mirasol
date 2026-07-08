@@ -139,6 +139,31 @@
     </button>
     {{- end }}
   </section>
+  {{- else if eq $block.type "cta"}}
+  <section class="cta-section bg-primary text-white py-5">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-8 mb-4 mb-lg-0">
+          {{- with $block.title }}
+          <h2 class="fw-bold mb-3">{{ $block.title}}</h2>
+          {{- end }}
+          {{- with $block.subtitle }}
+          <p class="lead mb-0">{{ $block.subtitle}}</p>
+          {{- end }}
+        </div>
+        {{ with $block.button }}
+        <div class="col-lg-4 text-lg-end">
+          {{- range .}}
+          <a href="{{ .href }}" class="btn btn-light btn-lg px-4 py-2 rounded-pill">
+            {{ .text }}
+            <i class="bi bi-arrow-right ms-2"></i>
+          </a>
+          {{- end}}
+        </div>
+        {{- end}}
+      </div>
+    </div>
+  </section>
   {{- else}}
     <div class="alert alert-warning border-warning m-3 text-center" role="alert">
     <span class="display-5">Warning! <br> Block type unsupported! </span><br> <code class="display-6">{{$block.type}}</code>
