@@ -1,4 +1,5 @@
 {{ define "main" }}
+<section class="homepage-content m-3">
   {{ .Content }}
   {{- if ne .Params.single true }}
   {{ range site.RegularPages }}
@@ -6,4 +7,5 @@
     {{ .Summary }}
   {{ end }}
   {{- end}}
+<section>
 {{ end }}

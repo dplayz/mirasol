@@ -1,8 +1,8 @@
 {{ define "main" }}
-<a href="{{ .Parent.Permalink }}" class="text-start">
+<a href="{{ .Parent.Permalink }}" class="text-start m-3">
     <i class="fa-solid fa-arrow-left"></i>&lt; Back to {{ .Parent.Title }}
 </a>
-<article class="post-style-2 p-4 m-3 border rounded shadow-lg">
+<article class="post-style-2 p-4 m-4 border rounded shadow-lg">
     <section class="post-thumbnail">
         {{ with .Params.thumbnail }}
         <img src="{{ . }}" alt="{{ $.Title }}" class="img-fluid rounded my-3">
