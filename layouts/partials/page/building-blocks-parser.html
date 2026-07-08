@@ -57,6 +57,22 @@
       {{- end }}
     </div>
   </section>
+  {{- else}}
+    <div class="alert alert-warning border-warning m-3 text-center" role="alert">
+    <span class="display-5">Warning! <br> Block type unsupported! </span><br> <code class="display-6">{{$block.type}}</code>
+    <details class="text-start px-5 mx-5">
+      <summary class="text-center">What does it mean?</summary>     
+      It means that the block type you specified in your content file is not recognized by the theme. 
+    </details>
+    <details class="text-start px-5 mx-5">
+      <summary class="text-center">How to fix it?</summary>
+      <b>As webmaster:</b><br>
+      You can either change the block type in your content file to a supported one, or you can add support for the new block type in the theme by creating a new partial template for it.
+      <br>
+      <b>As the user:</b><br>
+      Report the issue to the webmaster of the site and ask them to fix it. 
+    </div>
+  {{- end -}}
 {{- end}}
 
 
