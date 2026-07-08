@@ -429,6 +429,29 @@
       </form>
     </div>
   </section>
+  {{- else if eq $block.type "code" -}}
+  <section class="code-section">
+    <div class="p-5">
+      {{- with $block.title }}
+        <h2 class="text mb-4">{{ . }}</h2>
+      {{- end }}
+      {{- with $block.code }} 
+        <pre><code class="language-{{ $block.language | default "plaintext" }}">{{ . | safeHTML }}</code></pre>
+      {{- end }}
+    </div>
+  </section>
+  {{- else if eq $block.type "quote" -}}
+  <section class="quote-section px-5 py-4">
+    <h2>{{ $block.title }}</h2>
+    <figure class="border-start border-5 border-primary px-3">
+      <blockquote class="blockquote">
+        <p>{{ $block.quote }}</p>
+      </blockquote>
+      <figcaption class="blockquote-footer">
+        {{ $block.author }}
+      </figcaption>
+    </figure>
+  </section>
   {{- else if eq $block.type "text" -}}
   <section class="text-section">
     <div class="p-5">
