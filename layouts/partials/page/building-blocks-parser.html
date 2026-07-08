@@ -320,6 +320,17 @@
       {{- end }}
     </div>
   </section>
+  {{- else if eq $block.type "image" -}}
+  <section class="image-section">
+    <div class="p-5 text-center">
+      {{- with $block.image }}  
+        <img src="{{ .src }}" class="img-fluid" alt="{{ .alt | default "Image" }}">
+      {{- end }}
+      {{- with $block.caption }}
+        <p class="text-muted mt-2">{{ . }}</p>
+      {{- end }}
+    </div>
+  </section>
   {{- else if eq $block.type "nested" }}
     {{- with $block.blocks }}
       {{ template "building-block-parser" . }}
