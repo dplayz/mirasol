@@ -57,6 +57,42 @@
       {{- end }}
     </div>
   </section>
+  {{- else if eq $block.type "product-header" -}}
+  <section class="position-relative overflow-hidden p-3 text-center bg-body-tertiary">
+      <div class="col-md-6 p-lg-5 mx-auto my-5">
+        {{- with $block.logo }}
+          <img class="d-block mx-auto " src='{{ .src | default "https://placehold.co/700x500?text=Logo here"}}' width="{{default .width "50%"}}" alt="Hero logo">
+        {{- end }}
+          <h1 class="display-3 fw-bold">{{ $block.title }}</h1>
+          <h3 class="fw-normal text-muted mb-3">{{ $block.subtitle }}</h3>
+          {{- with $block.links}}
+          <div class="d-flex gap-3 justify-content-center lead fw-normal">
+            {{- range . }}
+              <a class="icon-link" href="{{ .href }}">{{ .label }}<i class="bi bi-arrow-right-short"></i></i></a>
+            {{- end }}
+          </div>
+          {{- end }}
+      </div>
+  </section>
+  {{- else if eq $block.type "product-headlines" -}}
+  <section class="row g-3 my-md-3 ps-md-3">
+      {{- $headlines := $block.headlines | default slice -}}
+      {{- $singleHeadline := eq (len $headlines) 1 -}}
+      {{- range $index, $headline := $headlines }}
+      {{- $isLastOddItem := and (gt (len $headlines) 1) (eq (mod (len $headlines) 2) 1) (eq $index (sub (len $headlines) 1)) -}}
+      <div class='{{ if or $singleHeadline $isLastOddItem }}col-12{{ else }}col-md-6{{ end }}'>
+          <div class="bg-body-tertiary pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden h-100">
+              <div class="my-3 p-3">
+                <h2 class="display-5">{{ $headline.title }}</h2>
+                <p class="lead">{{ $headline.subtitle }}</p>
+              </div>
+              {{- with $headline.image }}
+                <img src='{{ .src | default "#"}}' class="img-fluid rounded border" alt="" loading="lazy">
+              {{- end }}
+          </div>
+      </div>
+    {{- end }}
+  </section>
   {{- else}}
     <div class="alert alert-warning border-warning m-3 text-center" role="alert">
     <span class="display-5">Warning! <br> Block type unsupported! </span><br> <code class="display-6">{{$block.type}}</code>
