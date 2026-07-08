@@ -331,6 +331,19 @@
       {{- end }}
     </div>
   </section>
+  {{- else if eq $block.type "video" -}}
+  <section class="video-section">
+    <div class="p-5 text-center">
+      {{- with $block.video }}
+        <div class="ratio ratio-16x9">
+          <iframe src="{{ .src }}" title="{{ .title | default "Video" }}" allowfullscreen></iframe>
+        </div>
+      {{- end }}
+      {{- with $block.caption }}
+        <p class="text-muted mt-2">{{ . }}</p>
+      {{- end }}
+    </div>
+  </section>
   {{- else if eq $block.type "nested" }}
     {{- with $block.blocks }}
       {{ template "building-block-parser" . }}
