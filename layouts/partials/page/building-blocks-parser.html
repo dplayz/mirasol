@@ -370,6 +370,42 @@
       </div>
     </div>
   </section>
+  {{- else if eq $block.type "pricing-table" -}}
+  <section class="pricing-table-section">
+    <div class="p-5">
+      {{- with $block.title }}
+        <h2 class="text mb-4">{{ . }}</h2>
+      {{- end }}
+      <div class="row">
+        {{- range $block.plans }}
+        <div class="col-md-4 mb-4"> 
+          <div class="card h-100 text-center">
+            <div class="card-header">
+              {{- with .name }}
+                <h5 class="card-title">{{ . }}</h5>
+              {{- end }}
+              {{- with .price }}
+                <p class="card-price">{{ . }}</p>
+              {{- end }}
+            </div>
+            <div class="card-body">
+              {{- with .features }}
+                <ul class="list-group list-group-flush mb-3">
+                  {{- range . }}
+                    <li class="list-group-item">{{ . }}</li>
+                  {{- end }}
+                </ul>
+              {{- end }}
+              {{- with .button }}
+                <a href="{{ .href }}" class="btn btn-primary">{{ .text }}</a>
+              {{- end }}
+            </div>
+          </div>
+        </div>
+        {{- end }}
+      </div>
+    </div>
+  </section>
   {{- else if eq $block.type "text" -}}
   <section class="text-section">
     <div class="p-5">
