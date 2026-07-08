@@ -51,7 +51,7 @@
       {{- with $block.button }}
         <div class="d-grid gap-2 d-md-flex justify-content-md-start"></div>
           {{- range . }}
-          <button type="button" class='btn {{ .variant | default "border" }} btn-lg px-4 shadow me-md-2'>{{ .label }}</button>
+          <a type="button" class='btn {{ .variant | default "border" }} btn-lg px-4 shadow me-md-2' href="{{ .href }}">{{ .label }}</a>
           {{- end }}
         </div>
       {{- end }}
