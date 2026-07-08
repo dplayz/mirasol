@@ -1,5 +1,62 @@
 {{- define "building-blocks-render-block" -}}
   {{- $block := . -}}
+  {{ if eq $block.type "hero" }}
+  <section class="block-hero text-center py-5 px-3 px-lg-0">    
+      {{- with $block.announcement }}
+        <span class="d-sm-inline-flex align-items-center gap-1 py-2 px-3 me-2 mb-2 mb-lg-0 rounded-5 bg-body-secondary">
+          {{ . }}
+        </span>
+      {{- end }}
+      {{- with $block.logo }}
+        <img class="d-block mx-auto mb-4" src="{{ .src }}" width="{{default .width "20%"}}" alt="Hero logo">
+      {{- end }}
+      {{- with $block.title }}
+        <h1 class="display-5 fw-bold text-body-emphasis">{{ . }}</h1>
+      {{- end }}
+      {{- with $block.subtitle }}
+        <div class="col-lg-6 mx-auto">
+          <p class="lead mb-4">{{ . }}</p>
+        </div>
+      {{- end }}
+      {{- with $block.button }}
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+          {{ range . }}
+            <a type="button" class='btn {{ .variant | default "btn-primary" }} btn-lg px-4 gap-3' href="{{ .href }}">{{ .label }}</a>
+          {{ end }}
+        </div>
+      {{- end }}
+      {{- with $block.image }}
+      <div class="container px-5 mt-3">
+          <img src='{{ .src | default "https://placehold.co/700x500?text=Image here"}}' class="img-fluid border rounded-3 shadow-lg mb-4" alt="Hero Image" width="700" height="500" loading="lazy">
+      </div>
+      {{- end }}
+  </section>
+  {{- else if eq $block.type "heroLeftAlignedWImage"}}
+  <section class="row flex-lg-row-reverse align-items-center mx-3 g-5 px-5 py-5">
+    <div class="col-10 col-sm-8 col-lg-6">
+        <img src='{{ $block.image.src | default "https://placehold.co/700x500?text=Set image here"}}' class="d-block mx-lg-auto img-fluid" alt="Hero Image" width="700" height="500" loading="lazy">
+    </div>
+    <div class="col-lg-6">
+      {{- with $block.announcement }}
+        <span class="d-sm-inline-flex align-items-center gap-1 py-2 px-3 me-2 mb-2 mb-lg-3 rounded-5 bg-body-secondary">
+          {{ . }}
+        </span>
+      {{- end }}
+      {{- with $block.title }}
+        <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">{{ . }}</h1>
+      {{- end }}
+      {{- with $block.subtitle }}
+        <p class="lead">{{ . }}</p>
+      {{- end }}
+      {{- with $block.button }}
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start"></div>
+          {{- range . }}
+          <button type="button" class='btn {{ .variant | default "border" }} btn-lg px-4 shadow me-md-2'>{{ .label }}</button>
+          {{- end }}
+        </div>
+      {{- end }}
+    </div>
+  </section>
 {{- end}}
 
 
