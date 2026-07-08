@@ -309,6 +309,20 @@
       </div>
     </div>
   </section>
+  {{- else if eq $block.type "faq" -}}
+  <section class="faq-section">
+    <div class="p-5">
+      {{- with $block.title }}
+        <h2 class="text mb-4">{{ . }}</h2>
+      {{- end }}
+      {{- range $block.questions }}
+        <div class="mb-3">
+          <h5>{{ .question }}</h5>
+          <p>{{ .answer }}</p>
+        </div>
+      {{- end }}
+    </div>
+  </section>
   {{- else if eq $block.type "text" -}}
   <section class="text-section">
     <div class="p-5">
