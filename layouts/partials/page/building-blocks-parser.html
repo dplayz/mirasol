@@ -164,6 +164,131 @@
       </div>
     </div>
   </section>
+  {{- else if eq $block.type "changelogmanager"}}
+  <section class="changelog-section py-5">
+      <div class="card shadow-sm p-4 mx-4 bg-white rounded">
+          <h2 class="mb-4">{{ $block.title | default "Project Changelog" }}</h2>
+          {{$changelogdata := .changelogs | default slice }}
+          <div class="mb-4">
+              <label for="versionSelector" class="form-label fw-bold">Select Version:</label>
+              <select class="form-select form-select-lg" id="versionSelector">
+                {{- if gt (len $changelogdata) 0 }}
+                  {{- range $i, $chg := $changelogdata }}
+                    <option value='{{ $chg.version | replaceRE "\\." "-" }}' {{ if eq $i 0 }}selected{{ end }}>
+                      v{{ $chg.version }}{{ if eq $i 0 }} (Latest){{ end }}
+                    </option>
+                  {{- end }}
+                {{- else }}
+                  <option value="">No versions</option>
+                {{- end }}
+              </select>
+          </div>
+          <div id="changelogContainer">
+            {{ range $i, $chg := $changelogdata }}
+              {{ $vFormatted := $chg.version | replaceRE "\\." "-" }}
+              <div id="chlog-v{{ $vFormatted }}" data-version="v{{ $vFormatted }}" class="changelog-version mb-4" data-order="{{ $i }}">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                      <h3 class="text-primary mb-0">v{{ $chg.version }}</h3>
+                      <span class="badge bg-secondary">{{ $chg.date | time.Format "January 2, 2006" }}</span>
+                  </div>
+                  <ul class="list-group list-group-flush">
+                      {{ range $chg.changes }}
+                      <li class="list-group-item">
+                        {{- if eq .type "feature" -}}
+                        <span class="badge bg-success me-2">Added</span> {{ .description }}
+                        {{- else if eq .type "fix" -}}
+                        <span class="badge bg-warning text-dark me-2">Fixed</span> {{ .description }}
+                        {{- else if eq .type "improvement" -}}
+                        <span class="badge bg-info text-dark me-2">Improved</span> {{ .description }}
+                        {{- else if eq .type "breaking" -}}
+                        <span class="badge bg-danger text-white me-2">Breaking</span> {{ .description }}
+                        {{- else if eq .type "remove" -}}
+                        <span class="badge bg-danger text-white me-2">Remove</span> {{ .description }}
+                        {{- else -}}
+                        <span class="badge bg-secondary me-2">Update</span> {{ .description }}
+                        {{- end -}}
+                      </li>
+                      {{- end }}
+                  </ul>
+              </div>
+            {{- end}}
+          </div>
+      </div>
+
+      <script>
+          document.addEventListener('turbo:load', function () {
+              const selector = document.getElementById('versionSelector');
+              if (!selector) return;
+
+              function getOrderOfVersion(versionStr) {
+                  const targetEl = document.querySelector(`[data-version="v${versionStr}"]`);
+                  return targetEl ? parseInt(targetEl.getAttribute('data-order')) : null;
+              }
+
+              function displayChangelog(value, updateHash = false) {
+                  let minOrder, maxOrder;
+
+                  if (value.includes('...')) {
+                      // It's a range expression: "1-1-0...2-0-0"
+                      const parts = value.split('...');
+                      const orderA = getOrderOfVersion(parts[0]);
+                      const orderB = getOrderOfVersion(parts[1]);
+                      
+                      minOrder = Math.min(orderA, orderB);
+                      maxOrder = Math.max(orderA, orderB);
+                  } else {
+                      // It's a single version
+                      const order = getOrderOfVersion(value);
+                      minOrder = order;
+                      maxOrder = order;
+                  }
+
+                  document.querySelectorAll('.changelog-version').forEach(el => {
+                      const elOrder = parseInt(el.getAttribute('data-order'));
+                      if (elOrder >= minOrder && elOrder <= maxOrder) {
+                          el.style.display = 'block';
+                      } else {
+                          el.style.display = 'none';
+                      }
+                  });
+
+                  if (updateHash) {
+                      const targetId = `chlog-v${value}`;
+                      const targetEl = document.getElementById(targetId);
+
+                      if (targetEl) {
+                          targetEl.removeAttribute('id');
+                          window.location.hash = targetId;
+                          targetEl.id = targetId;
+                      } else {
+                          window.location.hash = targetId;
+                      }
+                  }
+              }
+
+              selector.addEventListener('change', function() {
+                  displayChangelog(this.value, true);
+              });
+
+              function checkHash() {
+                  const hash = window.location.hash;
+                  if (hash && hash.startsWith('#chlog-v')) {
+                      const hashValue = hash.replace('#chlog-v', '');
+                      
+                      if (selector.querySelector(`option[value="${hashValue}"]`)) {
+                          selector.value = hashValue;
+                      }
+                      displayChangelog(hashValue, true);
+                  } else {
+                      displayChangelog(selector.value, false);
+                  }
+              }
+
+              window.addEventListener('hashchange', checkHash);
+              checkHash();
+          });
+      </script>
+  </section>
   {{- else}}
     <div class="alert alert-warning border-warning m-3 text-center" role="alert">
     <span class="display-5">Warning! <br> Block type unsupported! </span><br> <code class="display-6">{{$block.type}}</code>
