@@ -1,0 +1,14 @@
+{{- define "building-blocks-render-block" -}}
+  {{- $block := . -}}
+{{- end}}
+
+
+
+{{/* Entry point */}}
+{{- define "building-block-parser" -}} 
+  {{- range . }}
+    {{ template "building-blocks-render-block" . }}
+  {{- end -}}
+{{- end -}}
+
+{{ template "building-block-parser" . }}
