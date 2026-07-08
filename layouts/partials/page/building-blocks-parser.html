@@ -289,6 +289,26 @@
           });
       </script>
   </section>
+  {{- else if eq $block.type "gallery" -}}
+  <section class="gallery-section">
+    <div class="p-5">
+    {{- with $block.title }}
+      <h2 class="text mb-4">{{ . }}</h2>
+    {{- end }}
+    {{- with $block.subtitle }}
+      <p class="text mb-4">{{ . }}</p>
+    {{- end }}
+      <div class="row">
+        {{- range $block.images }}
+        <div class="col-4 mb-3">
+          <a class="ratio ratio-1x1 bg-primary text-white d-flex align-items-center justify-content-center" href="{{ .src }}" data-lightbox="gallery" data-title="{{ .caption }}">
+            <img src="{{ .src }}" class="img-fluid object-fit-cover" alt="{{ .caption }}">
+          </a>
+        </div>
+        {{- end }}
+      </div>
+    </div>
+  </section>
   {{- else}}
     <div class="alert alert-warning border-warning m-3 text-center" role="alert">
     <span class="display-5">Warning! <br> Block type unsupported! </span><br> <code class="display-6">{{$block.type}}</code>
