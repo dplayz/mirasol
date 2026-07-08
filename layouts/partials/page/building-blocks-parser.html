@@ -323,6 +323,24 @@
       {{- end }}
     </div>
   </section>
+  {{- else if eq $block.type "testimonial" -}}
+  <section class="testimonial-section">
+    <div class="p-5">
+      {{- with $block.title }}
+        <h2 class="text mb-4">{{ . }}</h2>
+      {{- end }}
+      {{- range $block.testimonials }}
+        <figure class="mb-4">
+          <blockquote class="blockquote">
+            <p>{{ .quote }}</p>
+          </blockquote>
+          <figcaption class="blockquote-footer">
+            {{ .author }}
+          </figcaption>
+        </figure>
+      {{- end }}
+    </div>
+  </section>
   {{- else if eq $block.type "feature-list" -}}
   <section class="feature-list-section">
     <div class="p-5">
