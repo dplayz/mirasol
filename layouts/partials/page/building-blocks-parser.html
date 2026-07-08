@@ -323,6 +323,35 @@
       {{- end }}
     </div>
   </section>
+  {{- else if eq $block.type "feature-list" -}}
+  <section class="feature-list-section">
+    <div class="p-5">
+      {{- with $block.title }}
+        <h2 class="text mb-4">{{ . }}</h2>
+      {{- end }}
+      <div class="row">
+        {{- range $block.features }}
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            {{- with .icon }}
+              <div class="card-header text-center">
+                <i class="{{ . }} fa-2x"></i>
+              </div>
+            {{- end }}
+            <div class="card-body">
+              {{- with .title }}  
+                <h5 class="card-title">{{ . }}</h5>
+              {{- end }}
+              {{- with .description }}
+                <p class="card-text">{{ . }}</p>
+              {{- end }}
+            </div>
+          </div>
+        </div>
+        {{- end }}
+      </div>
+    </div>
+  </section>
   {{- else if eq $block.type "text" -}}
   <section class="text-section">
     <div class="p-5">
