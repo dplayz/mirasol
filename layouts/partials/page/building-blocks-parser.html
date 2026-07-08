@@ -93,6 +93,52 @@
       </div>
     {{- end }}
   </section>
+  {{- else if eq $block.type "carousel" -}}
+  {{- $carouselID := printf "carousel-%s" (sha1 (printf "%v" $block)) -}}
+  {{- $items := $block.items | default slice -}}
+  <section id="{{ $carouselID }}" class="carousel slide" data-bs-ride="carousel">
+    {{- if gt (len $items) 1 }}
+    <div class="carousel-indicators">
+      {{- range $index, $item := $items }}
+      <button type="button" data-bs-target="#{{ $carouselID }}" data-bs-slide-to="{{ $index }}" class='{{ if eq $index 0 }}active{{ end }}' {{ if eq $index 0 }}aria-current="true"{{ end }} aria-label="Slide {{ add $index 1 }}"></button>
+      {{- end }}
+    </div>
+    {{- end }}
+    <div class="carousel-inner">
+      {{- range $index, $item := $items }}
+      <div class='carousel-item{{ if eq $index 0 }} active{{ end }}'>
+        <div class="ratio ratio-21x9">
+          <img src='{{ $item.src | default "https://placehold.co/1200x600?text=Slide+image" }}' class="d-block w-100 h-100 bg-secondary bg-gradient object-fit-cover" alt='{{ $item.alt | default (printf "Slide %d" (add $index 1)) }}'>
+        </div>
+        <div class="carousel-caption d-block position-absolute start-0 end-0 bottom-0 p-5" style="background: linear-gradient(to top, rgba(0,0,0,.75), rgba(0,0,0,0));">
+          {{- with $item.caption }}
+            {{- if .title }}<h5>{{ .title }}</h5>{{- else if $item.title }}<h5>{{ $item.title }}</h5>{{- else }}<h5>{{ $item.alt | default (printf "Slide %d" (add $index 1)) }}</h5>{{- end }}
+            {{- if .text }}<p>{{ .text }}</p>{{- else if $item.description }}<p>{{ $item.description }}</p>{{- end }}
+          {{- else }}
+            <h5 class="p-md-3">{{ $item.title | default ($item.alt | default (printf "Slide %d" (add $index 1))) }}</h5>
+            {{- with $item.description }}<p>{{ . }}</p>{{- end }}
+          {{- end }}
+        </div>
+      </div>
+      {{- else }}
+      <div class="carousel-item active">
+        <div class="ratio ratio-16x9">
+          <img src="https://placehold.co/1200x600?text=Add+carousel+items" class="d-block w-100 h-100" alt="Carousel placeholder">
+        </div>
+      </div>
+      {{- end }}
+    </div>
+    {{- if gt (len $items) 1 }}
+    <button class="carousel-control-prev" type="button" data-bs-target="#{{ $carouselID }}" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#{{ $carouselID }}" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+    {{- end }}
+  </section>
   {{- else}}
     <div class="alert alert-warning border-warning m-3 text-center" role="alert">
     <span class="display-5">Warning! <br> Block type unsupported! </span><br> <code class="display-6">{{$block.type}}</code>
