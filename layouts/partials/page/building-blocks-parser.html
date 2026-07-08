@@ -309,6 +309,17 @@
       </div>
     </div>
   </section>
+  {{- else if eq $block.type "text" -}}
+  <section class="text-section">
+    <div class="p-5">
+      {{- with $block.title }}
+        <h2 class="text mb-4">{{ . }}</h2>
+      {{- end }}
+      {{- with $block.content }}
+        <p class="text mb-4">{{ . }}</p>
+      {{- end }}
+    </div>
+  </section>
   {{- else if eq $block.type "nested" }}
     {{- with $block.blocks }}
       {{ template "building-block-parser" . }}
