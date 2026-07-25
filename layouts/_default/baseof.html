@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html lang="{{ site.Language.LanguageCode }}" dir="{{ or site.Language.LanguageDirection `ltr` }}">
 <head>
+{{- block "head" .}}
   {{ partial "head.html" . }}
-  {{- block "head-additions" .}}{{- end}}
+{{- end}}
+{{- block "head-additions" .}}{{- end}}
 </head>
-<body>
+<body 
+  data-page-style="{{ .Params.pageStyle }}" 
+  data-default-style="{{ .Site.Params.styles.default }}"
+>
   {{- block "header" .}}
   <header class="sticky-top" id="pageheader">
     {{ partial "header.html" . }}

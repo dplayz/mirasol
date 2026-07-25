@@ -1,0 +1,71 @@
+{{ $currentStyle := "" }}
+{{ if .Params.pageStyle }}
+  {{ range $.Site.Params.styles.config }}
+    {{ if eq .name $.Params.pageStyle }}
+      {{ $currentStyle = .stylesheet }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ if not $currentStyle }}
+  {{ $currentStyle = $.Site.Params.styles.default }}
+{{ end }}
+
+<link 
+  id="site-style" 
+  rel="stylesheet" 
+  href="{{ $currentStyle }}"
+  data-turbo-track="reload"
+>
+
+<script data-turbo-permanent>
+  var styleMap = {
+    {{- range .Site.Params.styles.config }}
+      '{{ .name }}': {{ printf "'%s'" .stylesheet | safeJS }},
+    {{- end }}
+  };
+
+  function changeStyle(name) {
+    var targetLink = document.getElementById('site-style');
+    if (targetLink && styleMap[name]) {
+      targetLink.setAttribute('href', styleMap[name]);
+    }
+  }
+</script>
+
+
+<script>
+(function() {
+  function resolveAndApplyStyle() {
+    const body = document.body;
+    if (!body) return;
+
+    const hash = window.location.hash.replace('#', '');
+    const urlParams = new URLSearchParams(window.location.search);
+    const styleUrlParamValue = urlParams.get('style');
+
+    const pageStyleValue = body.dataset.pageStyle;
+    const userPreferenceStyleValue = localStorage.getItem('pageStyle');
+    const defaultStyleValue = body.dataset.defaultStyle;
+
+    // Only apply hash if it actually maps to a valid stylesheet name
+    const styleToApply = 
+      (styleMap[hash] ? hash : null) || 
+      styleUrlParamValue || 
+      pageStyleValue || 
+      userPreferenceStyleValue || 
+      defaultStyleValue;
+
+    if (styleToApply) {
+      changeStyle(styleToApply);
+    }
+  }
+
+  document.addEventListener('turbo:before-render', resolveAndApplyStyle);
+  
+  document.addEventListener('turbo:load', resolveAndApplyStyle);
+  window.addEventListener('hashchange', resolveAndApplyStyle);
+
+  resolveAndApplyStyle();
+})();
+</script>
