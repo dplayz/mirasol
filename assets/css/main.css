@@ -1,20 +1,12 @@
 body {
-  color: #222;
-  font-family: sans-serif;
-  line-height: 1.5;
   max-width: 1366px;
   margin: 0 auto;
 }
 body main{
   margin:1rem;
 }
-header {
-  border-bottom: 1px solid #222;
-  margin-bottom: 1rem;
-}
 
 footer {
-  border-top: 1px solid #222;
   margin-top: 1rem;
 }
 
