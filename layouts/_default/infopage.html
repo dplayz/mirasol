@@ -1,15 +1,43 @@
 {{- define "header"}}
+
 <div class="dropdown">
   <button class="btn btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
     <i class="bi bi-list"></i>
   </button>
   <ul class="dropdown-menu">
-    <li><h6 class="dropdown-header">{{.Site.Title}}</h6></li>
+    <li><h6 class="dropdown-header">{{ .Site.Title }}</h6></li>
     <li><a class="dropdown-item" href="/">Home</a></li>
     <li><a class="dropdown-item" href="#">Sidebar Items</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header">Page Menus</h6></li>
-    <li><a class="dropdown-item" href="#">Color Scheme</a></li>
+    <li class="dropdown dropend">
+      <a class="dropdown-item dropdown-toggle" href="#" id="dropdown-layouts" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Color Scheme
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="dropdown-layouts">
+        <li><a class="dropdown-item" href="#">Light</a></li>
+        <li><a class="dropdown-item" href="#">Dark</a></li>
+        <li><a class="dropdown-item" href="#">Auto</a></li>
+      </ul>
+    </li>
+    <li class="dropdown dropend">
+      <a class="dropdown-item dropdown-toggle" href="#" id="dropdown-layouts" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Page Styles
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="dropdown-layouts">
+        {{- range .Site.Params.styles.config }}
+          <li>
+            <a 
+              class="dropdown-item" 
+              href="#" 
+              onclick="applyAndSaveStyle('{{ .name }}'); return false;">
+              {{ default .name .title }}
+            </a>
+          </li>
+        {{- end }}
+        <li><a href="#" class="dropdown-item" onclick="applyAndSaveStyle('default'); return false;">Default</a></li>
+      </ul>
+    </li>
   </ul>
 </div>
 {{end}}
