@@ -15,27 +15,29 @@
         Color Scheme
       </a>
       <ul class="dropdown-menu" aria-labelledby="dropdown-layouts">
-        <li><a class="dropdown-item" onclick="setBootstrapTheme('auto')">Auto</a></li>
-        <li><a class="dropdown-item" onclick="setBootstrapTheme('light')">Light</a></li>
-        <li><a class="dropdown-item" onclick="setBootstrapTheme('dark')">Dark</a></li>
+        <li><a class="dropdown-item" onclick="setBootstrapTheme('auto')"><i class="bi bi-circle-half"></i> Auto</a></li>
+        <li><a class="dropdown-item" onclick="setBootstrapTheme('light')"><i class="bi bi-brightness-high-fill"></i> Light</a></li>
+        <li><a class="dropdown-item" onclick="setBootstrapTheme('dark')"><i class="bi bi-moon-stars-fill"></i> Dark</a></li>
       </ul>
     </li>
     <li class="dropdown dropend">
       <a class="dropdown-item dropdown-toggle" href="#" id="dropdown-layouts" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Page Styles
       </a>
+
       <ul class="dropdown-menu" aria-labelledby="dropdown-layouts">
+        <li><a href="#" class="dropdown-item" onclick="applyAndSaveStyle('default'); return false;"> <i class="bi bi-palette-fill"></i> Default</a></li>
         {{- range .Site.Params.styles.config }}
           <li>
             <a 
               class="dropdown-item" 
               href="#" 
               onclick="applyAndSaveStyle('{{ .name }}'); return false;">
+              <i class="bi bi-palette-fill"></i> 
               {{ default .name .title }}
             </a>
           </li>
         {{- end }}
-        <li><a href="#" class="dropdown-item" onclick="applyAndSaveStyle('default'); return false;">Default</a></li>
       </ul>
     </li>
   </ul>
