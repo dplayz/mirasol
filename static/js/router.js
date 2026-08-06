@@ -119,12 +119,14 @@ class StackRouter {
 function initializeStackRouter() {
   const screensContainer = document.querySelector('.screens-container');
   if (screensContainer) {
-    const firstScreen = screensContainer.querySelector('.screen');
-    if (firstScreen && firstScreen.id) {
+    const initialScreenId = screensContainer.dataset.initialScreen;
+    const activeScreen = screensContainer.querySelector('.screen.active');
+    const initialScreen = activeScreen || (initialScreenId ? document.getElementById(initialScreenId) : null) || screensContainer.querySelector('.screen');
+    if (initialScreen && initialScreen.id) {
       if (window.router && typeof window.router.destroy === 'function') {
         window.router.destroy();
       }
-      window.router = new StackRouter(firstScreen.id);
+      window.router = new StackRouter(initialScreen.id);
     }
   }
 }
