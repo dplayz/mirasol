@@ -19,6 +19,8 @@ a {
   max-width: 576px;
   margin-left: auto;
   margin-right: auto;
+  overflow: hidden;
+  background-clip: padding-box;
 }
 
 /* Stack Navigation Screens */
@@ -49,25 +51,24 @@ a {
   grid-template-columns: 2.5rem 1fr 2.5rem;
   align-items: center;
   padding: 0.2rem 0 1rem 0;
-  margin-top: -20px;
+  margin-top: 20px;
   margin-bottom: 0.5rem;
   border-bottom: 1px solid #e0e0e0;
   min-height: 40px;
 }
 
-.infopage-screens-back-btn {
+.screen-back-btn {
   grid-column: 1;
   justify-self: start;
-  color: #007aff;
-  padding: 0.25rem 0.5rem;
   background: none;
   border: none;
   cursor: pointer;
+  color: #007aff;
   font-size: 1.5rem;
   line-height: 1;
 }
 
-.infopage-screens-back-btn:hover {
+.screen-back-btn:hover {
   opacity: 0.7;
 }
 
@@ -84,11 +85,9 @@ a {
 
 .infopage-screens-content {
   flex: 1;
+  
 }
 
-.screen button {
-  margin-top: 12px;
-}
 
 .screen .d-flex {
   align-items: center;
