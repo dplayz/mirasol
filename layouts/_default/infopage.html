@@ -44,9 +44,9 @@
 </div>
 {{end}}
 {{ define "main" }}
-<main id="infopage" class="infopage border rounded-4 p-0 shadow-lg text-center">
+<div id="infopage" class="infopage border rounded-4 p-0 shadow-lg text-center">
   {{ partial "page/infopage-datacontent-parser.html" .Params.content }}
-</main>
+</div>
 <script src="/js/router.js"></script>
 {{ end }}
 {{- define "footer"}}<!---->{{end}}

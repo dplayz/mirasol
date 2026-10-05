@@ -114,8 +114,8 @@
     {{- $initialScreen := or $block.initialScreen "main" -}}
     <div class="screens-container" data-initial-screen="{{ $initialScreen }}">
       {{- range $index, $screen := $block.screens }}
-        <div id="{{ $screen.id }}" class="screen{{ if eq $screen.id $initialScreen }} active py-5{{ end }} px-3 py-2">
-          {{- $hideHeader := or $screen.hideHeader $screen.hide_header -}}
+        {{- $hideHeader := or $screen.hideHeader $screen.hide_header -}}
+        <div id="{{ $screen.id }}" class="screen{{ if eq $screen.id $initialScreen }} active py-5{{ end }} px-3 py-2{{ if $hideHeader }} pt-4{{ end }}">
           {{- if and (ne $screen.id $initialScreen) (not $hideHeader) }}
           <div class="infopage-screens-header">
             <button class="btn btn-sm screen-back-btn" onclick="router.pop()" style="display: none;">
