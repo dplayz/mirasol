@@ -42,7 +42,14 @@
 </div>
 {{end}}
 {{ define "main" }}
-<main id="infopage" class="infopage border rounded-4 px-3 py-5 shadow-lg text-center">
+<main id="infopage" class="infopage border rounded-4 px-3 py-5 shadow-lg text-center"
+  {{- with .Params.routerAnimation }}
+    {{- with .enter }} data-anim-enter="{{ . }}"{{ end }}
+    {{- with .exit }} data-anim-exit="{{ . }}"{{ end }}
+    {{- with .enterBack }} data-anim-enter-back="{{ . }}"{{ end }}
+    {{- with .exitBack }} data-anim-exit-back="{{ . }}"{{ end }}
+    {{- with .duration }} data-anim-duration="{{ . }}"{{ end }}
+  {{- end }}>
   {{ partial "page/infopage-datacontent-parser.html" .Params.content }}
 </main>
 <script src="/js/router.js"></script>
