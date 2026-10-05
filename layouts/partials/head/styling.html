@@ -12,6 +12,76 @@
   {{ $currentStyle = $.Site.Params.styles.default }}
 {{ end }}
 
+<script>
+  (function () {
+    window.getPreferredBootstrapTheme = function () {
+      const storedTheme = localStorage.getItem('theme');
+      if (storedTheme) {
+        return storedTheme;
+      }
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    };
+
+    window.setBootstrapTheme = function (theme) {
+      if (theme === 'auto') {
+        localStorage.removeItem('theme');
+        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-bs-theme', systemTheme);
+      } else {
+        localStorage.setItem('theme', theme);
+        document.documentElement.setAttribute('data-bs-theme', theme);
+      }
+      updateToggleUI();
+    };
+
+    window.toggleBootstrapTheme = function () {
+      const currentTheme = window.getPreferredBootstrapTheme();
+      const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      window.setBootstrapTheme(nextTheme);
+    };
+
+    const updateToggleUI = () => {
+      const currentTheme = window.getPreferredBootstrapTheme();
+      const isDark = currentTheme === 'dark';
+
+      document.querySelectorAll('[data-theme-toggle]').forEach((btn) => {
+        btn.setAttribute('aria-label', `Switch to ${isDark ? 'light' : 'dark'} mode`);
+      });
+
+      document.querySelectorAll('[data-theme-label]').forEach((label) => {
+        label.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+      });
+    };
+
+    const initialTheme = localStorage.getItem('theme');
+    if (initialTheme) {
+      document.documentElement.setAttribute('data-bs-theme', initialTheme);
+    } else {
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-bs-theme', systemTheme);
+    }
+
+    document.addEventListener('turbo:load', () => {
+      const activeTheme = window.getPreferredBootstrapTheme();
+      document.documentElement.setAttribute('data-bs-theme', activeTheme);
+      updateToggleUI();
+    });
+
+    document.addEventListener('turbo:before-cache', () => {
+      const activeTheme = window.getPreferredBootstrapTheme();
+      document.documentElement.setAttribute('data-bs-theme', activeTheme);
+    });
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      if (!localStorage.getItem('theme')) {
+        window.setBootstrapTheme('auto');
+      }
+    });
+  })();
+</script>
+
+
+
 <link 
   id="site-style" 
   rel="stylesheet" 

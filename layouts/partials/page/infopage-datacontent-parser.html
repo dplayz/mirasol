@@ -25,6 +25,7 @@
     </a>
 
   {{- else if eq $block.type "screen-link" -}}
+    <button class="btn btn-primary d-flex p-3 my-2 text-start container-fluid align-items-center" onclick="router.push('{{ $block.screenId }}')">
     <button class="btn btn-primary d-flex p-3 text-start container-fluid align-items-center" onclick="router.push('{{ $block.screenId }}'{{ with $block.animation }}, {{ . | jsonify }}{{ end }})">
       <span>
         {{- if $block.iconClass}}
@@ -111,6 +112,12 @@
      {{$block.content | markdownify}}
     </div>
   {{- else if eq $block.type "screens" -}}
+    {{- $initialScreen := or $block.initialScreen "main" -}}
+    <div class="screens-container" data-initial-screen="{{ $initialScreen }}">
+      {{- range $index, $screen := $block.screens }}
+        {{- $hideHeader := or $screen.hideHeader $screen.hide_header -}}
+        <div id="{{ $screen.id }}" class="screen{{ if eq $screen.id $initialScreen }} active py-5{{ end }} px-3 py-2{{ if $hideHeader }} pt-4{{ end }}">
+          {{- if and (ne $screen.id $initialScreen) (not $hideHeader) }}
     <div class="screens-container"
       {{- with $block.animation }}
         {{- with .enter }} data-anim-enter="{{ . }}"{{ end }}
