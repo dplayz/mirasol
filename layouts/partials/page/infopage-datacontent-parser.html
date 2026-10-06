@@ -25,7 +25,11 @@
   </span>
 </a>
 {{- else if eq $block.type "icon"}}
-<i class="{{$block.iconClass}} {{$block.size}}"></i>
+<i class="{{$block.iconClass}} {{$block.size}}"></i><br>
+{{- else if eq $block.type "image"}}
+{{- $width := or $block.size.width $block.size.height "120px" }}
+{{- $height := or $block.size.height (or $block.size.width "120px") }}
+<img src="{{ $block.src }}" class="{{$block.class}}" alt="{{$block.alt}}" width="{{$width}}" height="{{$height}}">
 {{- else if eq $block.type "screen-link" -}}
 <button class="btn btn-primary d-flex p-3 text-start container-fluid align-items-center"
   onclick="router.push('{{ $block.screenId }}'{{ with $block.animation }}, {{ . | jsonify }}{{ end }})">
