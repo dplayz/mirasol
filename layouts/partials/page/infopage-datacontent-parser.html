@@ -24,9 +24,14 @@
     <i class="bi bi-box-arrow-up-right"></i>
   </span>
 </a>
-
+{{- else if eq $block.type "icon"}}
+<i class="{{$block.iconClass}} {{$block.size}}"></i><br>
+{{- else if eq $block.type "image"}}
+{{- $width := or $block.size.width $block.size.height "120px" }}
+{{- $height := or $block.size.height (or $block.size.width "120px") }}
+<img src="{{ $block.src }}" class="{{$block.class}}" alt="{{$block.alt}}" width="{{$width}}" height="{{$height}}">
 {{- else if eq $block.type "screen-link" -}}
-<button class="btn btn-primary d-flex p-3 my-2 text-start container-fluid align-items-center"
+<button class="btn btn-primary d-flex p-3 text-start container-fluid align-items-center"
   onclick="router.push('{{ $block.screenId }}'{{ with $block.animation }}, {{ . | jsonify }}{{ end }})">
   <span>
     {{- if $block.iconClass}}
@@ -117,22 +122,18 @@
   {{$block.content | markdownify}}
 </div>
 {{- else if eq $block.type "screens" -}}
-{{- $initialScreen := or $block.initialScreen "main" -}}
 <div class="screens-container" {{- with $block.animation }} {{- with .enter }} data-anim-enter="{{ . }}" {{ end }} {{-
   with .exit }} data-anim-exit="{{ . }}" {{ end }} {{- with .enterBack }} data-anim-enter-back="{{ . }}" {{ end }} {{-
   with .exitBack }} data-anim-exit-back="{{ . }}" {{ end }} {{- with .duration }} data-anim-duration="{{ . }}" {{ end }}
   {{- end }}>
-  {{- range $screen := $block.screens }}
-  {{- $hideHeader := or $screen.hideHeader $screen.hide_header -}}
-  {{- $keepPadding := or (eq $screen.id $initialScreen) $hideHeader -}}
-  <div id="{{ $screen.id }}"
-    class="screen{{ if eq $screen.id $initialScreen }} active{{ end }}{{ if $keepPadding }} px-3 py-5{{ end }}{{ if and (ne $screen.id $initialScreen) (not $hideHeader) }} screen-with-header{{ end }}"
-    {{- with $screen.animation }} {{- with .enter }} data-anim-enter="{{ . }}" {{ end }} {{- with .exit }}
+  {{- range $index, $screen := $block.screens }}
+  <div id="{{ $screen.id }}" class="screen{{if eq $index (or $block.initialScreen 0) }} active{{end}}" {{- with
+    $screen.animation }} {{- with .enter }} data-anim-enter="{{ . }}" {{ end }} {{- with .exit }}
     data-anim-exit="{{ . }}" {{ end }} {{- with .enterBack }} data-anim-enter-back="{{ . }}" {{ end }} {{- with
     .exitBack }} data-anim-exit-back="{{ . }}" {{ end }} {{- with .duration }} data-anim-duration="{{ . }}" {{ end }}
     {{- end }}>
-    {{- if and (ne $screen.id $initialScreen) (not $hideHeader) }}
-    <div class="infopage-screens-header py-3">
+    {{- if ne $index (or $block.initialScreen 0) }}
+    <div class="infopage-screens-header">
       <button class="btn btn-sm screen-back-btn" onclick="router.pop()" style="display: none;">
         <i class="bi bi-chevron-left"></i>
       </button>
@@ -147,9 +148,9 @@
   </div>
   {{- end }}
 </div>
-{{- else }}
+{{- else}}
 <div class="alert alert-warning" role="alert">
-  Warning! Block type unsupported: <code>{{ $block.type }}</code>
+  Warning! Block type unsupported: <code>{{$block.type}}</code>
 </div>
 {{- end -}}
 
